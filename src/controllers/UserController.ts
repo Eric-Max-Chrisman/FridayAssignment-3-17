@@ -17,14 +17,14 @@ async function getAllUserProfiles(req: Request, res: Response): Promise<void> {
 }
 
 async function registerUser(req: Request, res: Response): Promise<void> {
-  const { email, password } = req.body as AuthRequest;
+  const { email, password, firstName, lastName } = req.body as AuthRequest;
 
   // IMPORTANT: Hash the password
   const passwordHash = await argon2.hash(password);
 
   try {
     // IMPORTANT: Store the `passwordHash` and NOT the plaintext password
-    const newUser = await addUser(email, passwordHash);
+    const newUser = await addUser(email, passwordHash, firstName, lastName);
     console.log(newUser);
     res.sendStatus(201);
   } catch (err) {
