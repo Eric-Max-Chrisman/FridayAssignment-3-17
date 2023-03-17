@@ -74,6 +74,15 @@ async function updateEmailAddress(userId: string, newEmail: string): Promise<voi
     .execute();
 }
 
+async function updateName(user: User, newFirstName: string, newLastName: string): Promise<User> {
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({firstName: newFirstName})
+    .where({ user.userID })
+    .execute();
+}
+
 export {
   addUser,
   getUserByEmail,
@@ -83,4 +92,5 @@ export {
   allUserData,
   resetAllProfileViews,
   updateEmailAddress,
+  updateName,
 };
