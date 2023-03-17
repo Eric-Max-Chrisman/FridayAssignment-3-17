@@ -3,11 +3,13 @@ import { User } from '../entities/User';
 
 const userRepository = AppDataSource.getRepository(User);
 
-async function addUser(email: string, passwordHash: string): Promise<User> {
+async function addUser(email: string, passwordHash: string, firstName: string, lastName: string): Promise<User> {
   // Create the new user object
   let newUser = new User();
   newUser.email = email;
   newUser.passwordHash = passwordHash;
+  newUser.firstName = firstName;
+  newUser.lastName = lastName;
 
   // Then save it to the database
   // NOTES: We reassign to `newUser` so we can access
