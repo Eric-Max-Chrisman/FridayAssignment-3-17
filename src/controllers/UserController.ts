@@ -152,6 +152,32 @@ async function updateUserEmail(req: Request, res: Response): Promise<void> {
   res.sendStatus(200);
 }
 
+async function setNewName(req: Request, res: Response): Promise<void> {
+  const { userId, firstName, lastName } = req.params as UserIdParam;
+  
+  if(//not found){
+    res.status(404); // doesn't exist
+    return
+  }
+  
+  if(//not logged in or its not there accuount){
+    res.status(403); // Forbidden
+    return  
+  }
+  
+  try{
+    let user = await getUserById(userId);
+    await updateName(user, firstName, lastName);
+  }
+  catch (err) {
+    console.error(err);
+    return
+  }
+  
+  res.status(200);
+  res.json(user);
+}
+
 export {
   registerUser,
   logIn,
@@ -159,4 +185,5 @@ export {
   getAllUserProfiles,
   resetProfileViews,
   updateUserEmail,
+  setNewName,
 };
