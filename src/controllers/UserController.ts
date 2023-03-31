@@ -9,6 +9,7 @@ import {
   allUserData,
   resetAllProfileViews,
   updateEmailAddress,
+  updateName,
 } from '../models/UserModel';
 import { parseDatabaseError } from '../utils/db-utils';
 
@@ -25,8 +26,10 @@ async function registerUser(req: Request, res: Response): Promise<void> {
   try {
     // IMPORTANT: Store the `passwordHash` and NOT the plaintext password
     const newUser = await addUser(email, passwordHash, firstName, lastName);
+    res.json(newUser);
     console.log(newUser);
     res.sendStatus(201);
+    res.redirect("/login.html");
   } catch (err) {
     console.error(err);
     const databaseErrorMessage = parseDatabaseError(err);
@@ -153,20 +156,23 @@ async function updateUserEmail(req: Request, res: Response): Promise<void> {
 }
 
 async function setNewName(req: Request, res: Response): Promise<void> {
-  const { userId, firstName, lastName } = req.params as UserIdParam;
+  const { userId, firstName, lastName } = req.params as ChangeNameParam;
   
-  if(//not found){
+  let userExist = await getUserById(userId);
+  if(!userExist){
     res.status(404); // doesn't exist
     return
   }
-  
-  if(//not logged in or its not there accuount){
+
+  // , authenticatedUser |  || authenticatedUser.userId !== userId
+  const { isLoggedIn } = req.session;
+  if(!isLoggedIn){
     res.status(403); // Forbidden
     return  
   }
   
+  let user = await getUserById(userId);
   try{
-    let user = await getUserById(userId);
     await updateName(user, firstName, lastName);
   }
   catch (err) {

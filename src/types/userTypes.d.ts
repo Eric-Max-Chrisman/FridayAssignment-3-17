@@ -8,3 +8,9 @@ type AuthRequest = {
 type UserIdParam = {
   targetUserId: string;
 };
+
+type ChangeNameParam = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+}

@@ -15,6 +15,8 @@ import {
 } from './controllers/UserController';
 
 const app: Express = express();
+app.use(express.static('public', {extensions: ['html']}));
+
 const { PORT, COOKIE_SECRET } = process.env;
 
 const SQLiteStore = connectSqlite3(session);
@@ -31,6 +33,9 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+
+app.use(express.static('public'));
 
 app.post('/api/users', registerUser); // Create an account
 app.post('/api/login', logIn); // Log in to an account
@@ -45,3 +50,5 @@ app.post('/api/users/:userId/name', setNewName);
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
 });
+
+

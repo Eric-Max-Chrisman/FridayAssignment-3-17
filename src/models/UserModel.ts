@@ -74,13 +74,16 @@ async function updateEmailAddress(userId: string, newEmail: string): Promise<voi
     .execute();
 }
 
-async function updateName(user: User, newFirstName: string, newLastName: string): Promise<User> {
+async function updateName(user: User, newFirstName: string, newLastName: string): Promise<User> { //change to return user
+  const id = user.userId
   await userRepository
     .createQueryBuilder()
     .update(User)
-    .set({firstName: newFirstName})
-    .where({ user.userID })
+    .set({firstName: newFirstName, lastName: newLastName})
+    .where({ id })
     .execute();
+  
+  return(await getUserById(id));
 }
 
 export {
