@@ -32,6 +32,9 @@ app.use(
   })
 );
 
+app.set('view engine', 'ejs'); // html ss rendering
+//check the slides
+
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
