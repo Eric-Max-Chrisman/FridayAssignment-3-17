@@ -179,7 +179,8 @@ async function setNewName(req: Request, res: Response): Promise<void> {
     console.error(err);
     return
   }
-  
+
+ 
   res.status(200);
   res.json(user);
 }
